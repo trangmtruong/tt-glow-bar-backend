@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const indexRouter = require("./routes/index");
 
 const app = express();
@@ -19,6 +20,10 @@ mongoose
 //a middleware that enables you to parse the body
 //always put app.use before router
 app.use(express.json());
+
+//cors allows process requests from client to server
+//connects front and backend
+app.use(cors());
 //app.use allows us to register routes & middlewares
 app.use("/", indexRouter);
 
