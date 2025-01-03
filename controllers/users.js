@@ -16,7 +16,7 @@ const getUsers = (req, res) => {
     });
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   console.log(req.body);
   const { name, email, password } = req.body;
   User.create({ name, email, password })
@@ -37,17 +37,11 @@ const getUserId = (req, res) => {
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.name });
-      } else if (err.name === "CastError") {
-        return res.status(400).send({ message: err.name });
-      }
-      return res.status(500).send({ message: err.name });
+      handleErrors(err, next);
     });
 };
 
-const signIn = (req, res) => {
+const signIn = (req, res, next) => {
   //get email and password from req.body
   const { email, password } = req.body;
   //if email and password are INCORRECT, throw error
